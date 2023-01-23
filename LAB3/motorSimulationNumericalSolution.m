@@ -18,6 +18,7 @@ w_nl = 8200 * (2*pi) / 60; % rads / s
 
 % Set frame of view (time)
 tspan = [0, t_end];
+% Inital conditions
 y0 = [0, 0];
 
 % Numerical solution defiition
@@ -26,7 +27,6 @@ y0 = [0, 0];
 % Set correct units
 ts = t(:) .* 1000; % ms
 y(:,2) = y(:,2) ./ (2*pi) * 60; % rpm
-
 
 plot(ts, y(:,2))
 
