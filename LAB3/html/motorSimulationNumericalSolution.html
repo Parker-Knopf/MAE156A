@@ -1,0 +1,192 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>motorSimulationNumericalSolution</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-01-22"><meta name="DC.source" content="motorSimulationNumericalSolution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Parameters</a></li><li><a href="#3">Numerical Solution</a></li><li><a href="#4">Closed-Form Solution</a></li><li><a href="#5">Plot</a></li><li><a href="#6">Functions</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>; clc; close <span class="string">all</span>;
+<span class="comment">% hold on;</span>
+</pre><h2 id="2">Parameters</h2><pre class="codeinput"><span class="comment">% Set frame of view (time)</span>
+t_end = .25; <span class="comment">% s</span>
+
+<span class="comment">% Inertia Value of motor</span>
+J_m = 5*10^(-7); <span class="comment">% kgm^2</span>
+
+<span class="comment">% Stall Torque</span>
+t_s = 0.17 * 9.81 / 100; <span class="comment">% Nm</span>
+<span class="comment">% No load speed</span>
+w_nl = 8200 * (2*pi) / 60; <span class="comment">% rads / s</span>
+</pre><h2 id="3">Numerical Solution</h2><pre class="codeinput"><span class="comment">% Set frame of view (time)</span>
+tspan = [0, t_end];
+y0 = [0, 0];
+
+<span class="comment">% Numerical solution defiition</span>
+[t, y] = ode45(@(t,y) odefcn(t, y, J_m, t_s, w_nl), tspan, y0);
+
+<span class="comment">% Set correct units</span>
+ts = t(:) .* 1000; <span class="comment">% ms</span>
+y(:,2) = y(:,2) ./ (2*pi) * 60; <span class="comment">% rpm</span>
+
+
+<span class="comment">% plot(ts, y(:,2))</span>
+</pre><h2 id="4">Closed-Form Solution</h2><pre class="codeinput"><span class="comment">% Set frame of view (time)</span>
+t = linspace(0, t_end, t_end*100);
+
+<span class="comment">% Closed-form Solution</span>
+w = velocityProfile(J_m, t_s, w_nl); <span class="comment">% Change inertia here</span>
+
+<span class="comment">% Set correct units</span>
+ts = t(:) .* 1000;
+
+<span class="comment">% plot(ts, w(t))</span>
+</pre><h2 id="5">Plot</h2><pre class="codeinput"><span class="comment">% title("Numerical Solution vs Closed-Form Solution")</span>
+<span class="comment">% xlabel("Time (ms)");</span>
+<span class="comment">% ylabel("RPM");</span>
+<span class="comment">% legend("Numerical Sol", "Closed-form", "Location", "southeast");</span>
+</pre><h2 id="6">Functions</h2><pre class="codeinput"><span class="keyword">function</span> dydt = odefcn(t, y, J, t_s, w_nl)
+    <span class="comment">% Return numerical solution to be used with ODE45</span>
+    dydt = zeros(2,1);
+    dydt(1) = y(2);
+    dydt(2) = (t_s / J) * (1 - y(2)/w_nl);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> w = velocityProfile(J, t_s, w_nl)
+    <span class="comment">% Return velocity profile of motor with J inertia, t_s stall torque,</span>
+    <span class="comment">% and w_nl no load speed</span>
+    tr = w_nl * J / t_s;
+    w = @(t) w_nl * (1 - exp(-t/tr)) / (2*pi) * 60;
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all; clc; close all;
+% hold on;
+
+%% Parameters
+
+% Set frame of view (time)
+t_end = .25; % s
+
+% Inertia Value of motor
+J_m = 5*10^(-7); % kgm^2
+
+% Stall Torque
+t_s = 0.17 * 9.81 / 100; % Nm
+% No load speed
+w_nl = 8200 * (2*pi) / 60; % rads / s
+
+%% Numerical Solution
+
+% Set frame of view (time)
+tspan = [0, t_end];
+y0 = [0, 0];
+
+% Numerical solution defiition
+[t, y] = ode45(@(t,y) odefcn(t, y, J_m, t_s, w_nl), tspan, y0);
+
+% Set correct units
+ts = t(:) .* 1000; % ms
+y(:,2) = y(:,2) ./ (2*pi) * 60; % rpm
+
+
+% plot(ts, y(:,2))
+
+%% Closed-Form Solution
+
+% Set frame of view (time)
+t = linspace(0, t_end, t_end*100);
+
+% Closed-form Solution
+w = velocityProfile(J_m, t_s, w_nl); % Change inertia here
+
+% Set correct units
+ts = t(:) .* 1000;
+
+% plot(ts, w(t))
+
+%% Plot
+
+% title("Numerical Solution vs Closed-Form Solution")
+% xlabel("Time (ms)");
+% ylabel("RPM");
+% legend("Numerical Sol", "Closed-form", "Location", "southeast");
+
+%% Functions
+
+function dydt = odefcn(t, y, J, t_s, w_nl)
+    % Return numerical solution to be used with ODE45
+    dydt = zeros(2,1);
+    dydt(1) = y(2);
+    dydt(2) = (t_s / J) * (1 - y(2)/w_nl);
+end
+
+function w = velocityProfile(J, t_s, w_nl)
+    % Return velocity profile of motor with J inertia, t_s stall torque,
+    % and w_nl no load speed
+    tr = w_nl * J / t_s;
+    w = @(t) w_nl * (1 - exp(-t/tr)) / (2*pi) * 60;
+end
+##### SOURCE END #####
+--></body></html>
