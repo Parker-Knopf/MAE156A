@@ -24,7 +24,6 @@ n_n = 16; % Qty
 m_b = 7.09 / 1000; % kg
 m_w = 5.95 / 1000; % kg
 m_n = 3.02 / 1000; % kg
-b_w = 14 / 1000; % kg
 J_w = (n_b*m_b + n_w*m_w + n_n*m_n) * (1/2*b_r^2 + 1/2*f_2r^2);
 
 J_tot = (J_hub + J_fw + J_w) / n^2 + J_m; % kgm^2
