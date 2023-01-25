@@ -20,7 +20,7 @@ n = 4.43;
 % Stall Torque
 t_s = (0.17 * 9.81 / 100); % Nm
 t_s = t_s * pwm / 100; % PWM Load
-t_s = t_s - stallTorqueFriction(n_b, n_n, t_s);
+t_s = t_s - stallTorqueFriction(n_b, n_n);
 
 % Inertia
 J = inertia(n, n_b, n_n);
