@@ -4,9 +4,10 @@ hold on;
 %% Given Parameters
 
 n_b = 8; % Qty of bolts
-n_n = 1; % Qty of nuts per bolt
-pwm = 255; % PWM Value
-data = importdata("Data/motor_data_b8_n2_t1.csv");
+n_n = 2; % Qty of nuts per bolt
+pwm = 100; % PWM Percent Value (100, 75, 50)
+data1 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t1.csv", n_b, n_n, pwm));
+data2 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t2.csv", n_b, n_n, pwm));
 
 % Set frame of view (time)
 t_end = 10; % s
@@ -18,14 +19,25 @@ n = 4.43;
 
 % Stall Torque
 t_s = (0.17 * 9.81 / 100); % Nm
-t_s = t_s * pwm / 255; % PWM Load
-t_s = t_s - stallTorqueFriction(n_b, n_n);
+t_s = t_s * pwm / 100; % PWM Load
+t_s = t_s - stallTorqueFriction(n, n_b, n_n);
 
 % Inertia
 J = inertia(n, n_b, n_n);
 
-% No load speed
-w_nl = 8200 * (2*pi) / 60; % rads / s
+% Motor parameters
+V_eff = 12 * pwm /100; % Effective Voltage
+w_nl = 7910.21; % Pratical No-load Speed
+
+% K = 1.39*10^-2; % Inital val
+% R = 0.986; % Inital val
+% w_nl = 8200 * (2*pi) / 60; % rads / s
+
+K = 12 / w_nl;
+R = K * 12 / t_s;
+
+% Pratical Terminal Velocity
+w_tv = V_eff / K; % rads / s
 
 %% Numerical Solution
 
@@ -49,16 +61,34 @@ w_nl = 8200 * (2*pi) / 60; % rads / s
 t = linspace(0, t_end, t_end*100);
 
 % Closed-form Solution
-w = velocityProfile(J, t_s, w_nl); % Change inertia here
+w = velocityProfile(J, t_s, w_tv); % Change inertia here
 
 plot(t, w(t));
 
+f_v = terminalVelocity(w(t));
+t_r = riseTime(f_v, t, w(t));
+
+fprintf("Theoretical Results for %d bolts, %d nuts:\n", n_b, n_n);
+fprintf("Rise Time: %.3f\n", t_r);
+fprintf("Terminal Velocity: %.3f\n\n", f_v);
+
 %% Experimental Results
 
-[t, wf] = expVelocityPlot(data);
+[t1, wf1] = expVelocityPlot(data1);
+[t2, wf2] = expVelocityPlot(data2);
+
+f_v1 = terminalVelocity(wf1);
+f_v2 = terminalVelocity(wf2);
+f_v = (f_v1 + f_v2) / 2;
+
+t_r = (riseTime(f_v1, t1, wf1) + riseTime(f_v2, t2, wf2)) / 2;
+
+fprintf("Experimental Results for %d bolts, %d nuts:\n", n_b, n_n);
+fprintf("Rise Time: %.3f\n", t_r);
+fprintf("Terminal Velocity: %.3f\n\n", f_v);
 
 hold on;
-plot(t, wf);
+plot(t1, wf1);
 
 %% Plot
 
