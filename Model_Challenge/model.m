@@ -33,7 +33,7 @@ w_nl = 7910.21; % Pratical No-load Speed
 % R = 0.986; % Inital val
 % w_nl = 8200 * (2*pi) / 60; % rads / s
 
-K = 12 / w_nl;
+K = 12 / (w_nl * (2*pi) / 60);
 R = K * 12 / t_s;
 
 % Pratical Terminal Velocity
