@@ -5,7 +5,7 @@ hold on;
 
 n_b = 8; % Qty of bolts
 n_n = 2; % Qty of nuts per bolt
-pwm = 100; % PWM Percent Value (100, 75, 50)
+pwm = 50; % PWM Percent Value (100, 75, 50)
 data1 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t1.csv", n_b, n_n, pwm));
 data2 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t2.csv", n_b, n_n, pwm));
 
@@ -20,7 +20,6 @@ n = 4.43;
 % Stall Torque
 t_s = (0.17 * 9.81 / 100); % Nm
 t_s = t_s * pwm / 100; % PWM Load
-t_s = t_s - stallTorqueFriction(n, n_b, n_n);
 
 % Inertia
 J = inertia(n, n_b, n_n);
@@ -41,32 +40,36 @@ w_tv = V_eff / K; % rads / s
 
 %% Numerical Solution
 
-% % Set frame of view (time)
-% tspan = [0, t_end];
-% % Inital conditions
-% y0 = [0, 0];
-% 
-% % Numerical solution defiition
-% [t, y] = ode45(@(t,y) odefcn(t, y, J_m, t_s, w_nl), tspan, y0);
-% 
-% % Set correct units
-% ts = t(:) .* 1000; % ms
-% y(:,2) = y(:,2) ./ (2*pi) * 60; % rpm
-% 
-% plot(ts, y(:,2));
+% Set frame of view (time)
+tspan = [0, t_end];
+% Inital conditions
+y0 = [0, 0];
+
+% Numerical solution defiition
+[t, y] = ode45(@(t,y) odefcn(t, y, J, t_s, w_tv, n, n_b, n_n), tspan, y0);
+
+% Set correct units
+y(:,2) = y(:,2) ./ (2*pi) * 60; % rpm
+
+plot(t, y(:,2));
+
+f_v = terminalVelocity(y(:,2));
+t_r = riseTime(f_v, t, y(:,2));
 
 %% Closed-Form Solution
 
-% Set frame of view (time)
-t = linspace(0, t_end, t_end*100);
+% % Set frame of view (time)
+% t = linspace(0, t_end, t_end*100);
+% 
+% % Closed-form Solution
+% w = velocityProfile(J, t_s, w_tv); % Change inertia here
+% 
+% plot(t, w(t));
+% 
+% f_v = terminalVelocity(w(t));
+% t_r = riseTime(f_v, t, w(t));
 
-% Closed-form Solution
-w = velocityProfile(J, t_s, w_tv); % Change inertia here
-
-plot(t, w(t));
-
-f_v = terminalVelocity(w(t));
-t_r = riseTime(f_v, t, w(t));
+%% Theoretical Results
 
 fprintf("Theoretical Results for %d bolts, %d nuts:\n", n_b, n_n);
 fprintf("Rise Time: %.3f\n", t_r);
