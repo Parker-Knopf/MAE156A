@@ -3,9 +3,9 @@ hold on;
 
 %% Given Parameters
 
-n_b = 2; % Qty of bolts
-n_n = 1; % Qty of nuts per bolt
-pwm = 50; % PWM Percent Value (100, 75, 50)
+n_b = 8; % Qty of bolts
+n_n = 2; % Qty of nuts per bolt
+pwm = 100; % PWM Percent Value (100, 75, 50)
 data1 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t1.csv", n_b, n_n, pwm));
 data2 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t2.csv", n_b, n_n, pwm));
 
@@ -20,17 +20,24 @@ n = 4.43;
 % Stall Torque
 t_s = (0.17 * 9.81 / 100); % Nm
 t_s = t_s * pwm / 100; % PWM Load
-t_s = t_s - stallTorqueFriction(n_b, n_n);
+t_s = t_s - stallTorqueFriction(n, n_b, n_n);
 
 % Inertia
 J = inertia(n, n_b, n_n);
 
-% No load speed
+% Motor parameters
 V_eff = 12 * pwm /100; % Effective Voltage
-K = 1.39*10^-2;
-R = 0.986;
+w_nl = 7910.21; % Pratical No-load Speed
+
+% K = 1.39*10^-2; % Inital val
+% R = 0.986; % Inital val
 % w_nl = 8200 * (2*pi) / 60; % rads / s
-w_nl = V_eff / K; % rads / s
+
+K = 12 / w_nl;
+R = K * 12 / t_s;
+
+% Pratical Terminal Velocity
+w_tv = V_eff / K; % rads / s
 
 %% Numerical Solution
 
@@ -54,7 +61,7 @@ w_nl = V_eff / K; % rads / s
 t = linspace(0, t_end, t_end*100);
 
 % Closed-form Solution
-w = velocityProfile(J, t_s, w_nl); % Change inertia here
+w = velocityProfile(J, t_s, w_tv); % Change inertia here
 
 plot(t, w(t));
 

@@ -29,7 +29,7 @@ J_w = (n_b*m_b + n_w*m_w + n_n*m_n) * (1/2*b_r^2 + 1/2*f_2r^2);
 J_tot = (J_hub + J_fw + J_w) / n^2 + J_m; % kgm^2
 
 %% Data
-data = importdata("motor_flywheelB_data.csv");
+data = importdata("Data/motor_flywheelA_data.csv");
 
 %% Config Data
 
@@ -58,7 +58,7 @@ plot(time, wf)
 v = terminalVelocity(wf);
 rt = riseTime(v, time, wf);
 disp("Experimental Values:")
-fprintf("Terminal Velocity: %.2f rads/s\n", v / 2 /pi)
+fprintf("Terminal Velocity: %.2f rads/s\n", v)
 fprintf("Rise Time: %.4f s\n\n", rt)
 
 %% Theory - Motor
