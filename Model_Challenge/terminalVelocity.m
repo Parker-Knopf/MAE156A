@@ -1,4 +1,4 @@
 function v = terminalVelocity(data)
-    n = 100;
-    v = sum(data(end-n:end)) / n;
+    n = int32(length(data) / 4);
+    v = sum(data(end-n+1:end)) / n;
 end
