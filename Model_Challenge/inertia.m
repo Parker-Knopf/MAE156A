@@ -16,7 +16,7 @@ function J_tot = inertia(n, n_b, n_n)
     n_n = n_n * n_b;
     m_b = 7.0874 / 1000; % kg
     m_n = 3.0249 / 1000; % kg
-    J_w = (n_b*m_b + n_n*m_n) * (1/2*b_r^2 + 1/2*f_2r^2);
+    J_w = (n_b*m_b + n_n*m_n) * (1/2*b_r^2 + f_2r^2);
 
     J_tot = (J_hub + J_fw + J_w) / n^2 + J_m; % kgm^2
 end

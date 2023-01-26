@@ -5,7 +5,7 @@ hold on;
 
 n_b = 8; % Qty of bolts
 n_n = 2; % Qty of nuts per bolt
-pwm = 50; % PWM Percent Value (100, 75, 50)
+pwm = 100; % PWM Percent Value (100, 75, 50)
 data1 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t1.csv", n_b, n_n, pwm));
 data2 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t2.csv", n_b, n_n, pwm));
 
