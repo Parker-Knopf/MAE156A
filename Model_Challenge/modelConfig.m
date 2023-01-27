@@ -21,7 +21,8 @@ function [s] = modelConfig(n_b, n_n, pwm)
     
     % Motor parameters
     V_eff = 12 * pwm /100; % Effective Voltage
-    w_nl = 7910.21; % Pratical No-load Speed
+%     w_nl = 7910.21; % Pratical No-load Speed
+    w_nl = 8200; % Pratical No-load Speed
     
     K = 12 / (w_nl * (2*pi) / 60);
     
@@ -41,14 +42,15 @@ function [s] = modelConfig(n_b, n_n, pwm)
     % Set correct units
     y(:,2) = y(:,2) ./ (2*pi) * 60; % rpm
     
-    plot(t, y(:,2));
-    
     f_v_m = terminalVelocity(y(:,2));
-    t_r_m = riseTime(f_v_m, t, y(:,2));
+    t_r_m = riseTime(f_v_m, t, y(:,2)) * 1000; % ms
+
+    t = t(:) * 1000; % ms
+    plot(t, y(:,2));
     
     %% Theoretical Results
     
-    fprintf("Theoretical Results for %d bolts, %d nuts:\n", n_b, n_n);
+    fprintf("Theoretical Results for %d bolts, %d nuts at %d PWM:\n", n_b, n_n, pwm);
     fprintf("Rise Time: %.3f\n", t_r_m);
     fprintf("Terminal Velocity: %.3f\n\n", f_v_m);
     
@@ -61,13 +63,15 @@ function [s] = modelConfig(n_b, n_n, pwm)
     f_v2 = terminalVelocity(wf2);
     f_v_r = (f_v1 + f_v2) / 2;
     
-    t_r_r = (riseTime(f_v1, t1, wf1) + riseTime(f_v2, t2, wf2)) / 2;
+    t_r_r = (riseTime(f_v1, t1, wf1) + riseTime(f_v2, t2, wf2)) / 2 * 1000; % ms
     
-    fprintf("Experimental Results for %d bolts, %d nuts:\n", n_b, n_n);
+    fprintf("Experimental Results for %d bolts, %d nuts at %d PWM:\n", n_b, n_n, pwm);
     fprintf("Rise Time: %.3f\n", t_r_r);
     fprintf("Terminal Velocity: %.3f\n\n", f_v_r);
+    fprintf("------------------------\n");
     
     hold on;
+    t1 = t1(:) * 1000;
     plot(t1, wf1);
 
     %% S
@@ -77,7 +81,7 @@ function [s] = modelConfig(n_b, n_n, pwm)
     %% Plot
     
     title(sprintf("%d Bolts, %d Nuts at %d PWM", n_b, n_n, pwm));
-    xlabel("Time (s)");
+    xlabel("Time (ms)");
     ylabel("RPM");
     legend("Theory", "Experimental Results", "Location", "southeast");
 end
