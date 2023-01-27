@@ -61,7 +61,7 @@ function [s] = modelConfig(n_b, n_n, pwm)
     
     f_v1 = terminalVelocity(wf1);
     f_v2 = terminalVelocity(wf2);
-    f_v_r = (f_v1 + f_v2) / 2;
+    f_v_r = (f_v1 + f_v2) / 2.0;
     
     t_r_r = (riseTime(f_v1, t1, wf1) + riseTime(f_v2, t2, wf2)) / 2 * 1000; % ms
     
@@ -76,7 +76,7 @@ function [s] = modelConfig(n_b, n_n, pwm)
 
     %% S
 
-    s = abs(t_r_m - t_r_r) + 4*abs(f_v_m - f_v_r);
+    s = abs(t_r_m - t_r_r)/t_r_r + 4*abs(f_v_m - f_v_r)/f_v_r;
     
     %% Plot
     
