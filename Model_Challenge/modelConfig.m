@@ -46,7 +46,9 @@ function [s] = modelConfig(n_b, n_n, pwm)
     t_r_m = riseTime(f_v_m, t, y(:,2)) * 1000; % ms
 
     t = t(:) * 1000; % ms
-    plot(t, y(:,2));
+    plot(t, y(:,2), "color", "blue");
+    yline(f_v_m, "color", "cyan");
+    xline(t_r_m, "color", "cyan");
     
     %% Theoretical Results
     
@@ -72,7 +74,9 @@ function [s] = modelConfig(n_b, n_n, pwm)
     
     hold on;
     t1 = t1(:) * 1000;
-    plot(t1, wf1);
+    plot(t1, wf1, "color", "red");
+    yline(f_v_r, "color", "yellow");
+    xline(t_r_r, "color", "yellow");
 
     %% S
 
@@ -83,5 +87,5 @@ function [s] = modelConfig(n_b, n_n, pwm)
     title(sprintf("%d Bolts, %d Nuts at %d PWM", n_b, n_n, pwm));
     xlabel("Time (ms)");
     ylabel("RPM");
-    legend("Theory", "Experimental Results", "Location", "southeast");
+    legend("Theory", "", "", "Experimental Results", "Location", "southeast");
 end
