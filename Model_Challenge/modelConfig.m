@@ -1,4 +1,4 @@
-function [s] = modelConfig(n_b, n_n, pwm)
+function [s] = modelConfig(n_b, n_n, pwm, ploting)
     %% Given Parameters
     
     data1 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t1.csv", n_b, n_n, pwm));
@@ -13,7 +13,7 @@ function [s] = modelConfig(n_b, n_n, pwm)
     %% Parameters
     
     % Stall Torque
-    t_s = (0.17 * 9.81 / 100); % Nm
+    t_s = (0.175 * 9.81 / 100); % Nm
     t_s = t_s * pwm / 100; % PWM Load
     
     % Inertia
@@ -22,7 +22,7 @@ function [s] = modelConfig(n_b, n_n, pwm)
     % Motor parameters
     V_eff = 12 * pwm /100; % Effective Voltage
 %     w_nl = 7910.21; % Pratical No-load Speed
-    w_nl = 8200; % Pratical No-load Speed
+    w_nl = 8100; % Pratical No-load Speed
     
     K = 12 / (w_nl * (2*pi) / 60);
     
@@ -45,16 +45,20 @@ function [s] = modelConfig(n_b, n_n, pwm)
     f_v_m = terminalVelocity(y(:,2));
     t_r_m = riseTime(f_v_m, t, y(:,2)) * 1000; % ms
 
-    t = t(:) * 1000; % ms
-    plot(t, y(:,2), "color", "blue");
-    yline(f_v_m, "color", "cyan");
-    xline(t_r_m, "color", "cyan");
+    if (ploting)
+        t = t(:) * 1000; % ms
+        plot(t, y(:,2), "color", "blue");
+        yline(f_v_m, "color", "cyan");
+        xline(t_r_m, "color", "cyan");
+    end
     
     %% Theoretical Results
     
-    fprintf("Theoretical Results for %d bolts, %d nuts at %d PWM:\n", n_b, n_n, pwm);
-    fprintf("Rise Time: %.3f\n", t_r_m);
-    fprintf("Terminal Velocity: %.3f\n\n", f_v_m);
+    if (ploting)
+        fprintf("Theoretical Results for %d bolts, %d nuts at %d PWM:\n", n_b, n_n, pwm);
+        fprintf("Rise Time: %.3f\n", t_r_m);
+        fprintf("Terminal Velocity: %.3f\n\n", f_v_m);
+    end
     
     %% Experimental Results
     
@@ -67,25 +71,29 @@ function [s] = modelConfig(n_b, n_n, pwm)
     
     t_r_r = (riseTime(f_v1, t1, wf1) + riseTime(f_v2, t2, wf2)) / 2 * 1000; % ms
     
-    fprintf("Experimental Results for %d bolts, %d nuts at %d PWM:\n", n_b, n_n, pwm);
-    fprintf("Rise Time: %.3f\n", t_r_r);
-    fprintf("Terminal Velocity: %.3f\n\n", f_v_r);
-    fprintf("------------------------\n");
-    
-    hold on;
-    t1 = t1(:) * 1000;
-    plot(t1, wf1, "color", "red");
-    yline(f_v_r, "color", "yellow");
-    xline(t_r_r, "color", "yellow");
+    if (ploting)
+        fprintf("Experimental Results for %d bolts, %d nuts at %d PWM:\n", n_b, n_n, pwm);
+        fprintf("Rise Time: %.3f\n", t_r_r);
+        fprintf("Terminal Velocity: %.3f\n\n", f_v_r);
+        fprintf("------------------------\n");
+        
+        hold on;
+        t1 = t1(:) * 1000;
+        plot(t1, wf1, "color", "red");
+        yline(f_v_r, "color", "yellow");
+        xline(t_r_r, "color", "yellow");
+    end
 
     %% S
 
     s = abs(t_r_m - t_r_r)/t_r_r + 4*abs(f_v_m - f_v_r)/f_v_r;
     
     %% Plot
-    
-    title(sprintf("%d Bolts, %d Nuts at %d PWM", n_b, n_n, pwm));
-    xlabel("Time (ms)");
-    ylabel("RPM");
-    legend("Theory", "", "", "Experimental Results", "Location", "southeast");
+
+    if (ploting)
+        title(sprintf("%d Bolts, %d Nuts at %d PWM", n_b, n_n, pwm));
+        xlabel("Time (ms)");
+        ylabel("RPM");
+        legend("Theory", "", "", "Experimental Results", "Location", "southeast");
+    end
 end
