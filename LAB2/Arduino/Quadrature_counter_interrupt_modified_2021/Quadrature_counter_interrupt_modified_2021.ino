@@ -16,7 +16,7 @@ int encoder_input_B_pin = 2;       // Digital input pin
 // Variables for motor driver and PWM value for motor
 int direction_pin = 7;
 int pwm_pin = 6;
-float motor_value = floor(1*255); // 0 - 255
+float motor_value = floor(.75*255); // 0 - 255
 int motor_direction = 0;
 
 // Variables for detecting encoder pulse and counting
