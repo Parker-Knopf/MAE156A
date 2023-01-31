@@ -2,9 +2,9 @@ clear all; close all; clc;
 
 %% Parameters
 
-n_b = 4; % Number of Bolts on Flywheel
-n_n = 1; % Number of Nuts on Bolt
-pwm = 50; % Percent of PWM signal
+n_b = 8; % Number of Bolts on Flywheel
+n_n = 2; % Number of Nuts on Bolt
+pwm = 75; % Percent of PWM signal
 
 
 %% Model
