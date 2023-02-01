@@ -1,5 +1,9 @@
 function [s] = modelConfig(n_b, n_n, pwm, ploting)
     %% Given Parameters
+
+    % Indiviusal Figures if desired
+%     fig = figure(1);
+%     clf(fig);
     
     data1 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t1.csv", n_b, n_n, pwm));
     data2 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t2.csv", n_b, n_n, pwm));
@@ -94,6 +98,8 @@ function [s] = modelConfig(n_b, n_n, pwm, ploting)
         title(sprintf("%d Bolts, %d Nuts at %d PWM", n_b, n_n, pwm));
         xlabel("Time (ms)");
         ylabel("RPM");
-        legend("Theory", "", "", "Experimental Results", "Location", "southeast");
+        legend("Theory", "Theory t_r, f_v", "", "Experimental Results", "Experimental t_r, f_v", "Location", "southeast");
+        % Save Indiviusal Figures if desired
+%         saveas(fig, sprintf("Figures/b_%dn_%dpwm_%d.png", n_b, n_n, pwm))
     end
 end
