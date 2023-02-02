@@ -27,4 +27,4 @@ end
 
 s = mean(s(:));
 
-fprintf("Model Accuracy: %.3f\n", s);
+fprintf("Model Accuracy: %.4f\n", s);

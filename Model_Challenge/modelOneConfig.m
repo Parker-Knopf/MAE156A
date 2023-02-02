@@ -10,6 +10,6 @@ plot = true; % Plot data bool
 
 %% Model
 
-s = modelConfig(n_b, n_n, pwm, plot);
+s = modelConfigOne(n_b, n_n, pwm, plot);
 
 fprintf("Model Accuracy: %.3f\n", s);
