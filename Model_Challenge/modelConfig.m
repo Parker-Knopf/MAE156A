@@ -1,4 +1,4 @@
-function [s] = modelConfig(n_b, n_n, pwm, ploting)
+function [s] = modelConfig(n_b, n_n, pwm, ploting,mew,Jm,Cad)
     %% Given Parameters
 
     % Indiviusal Figures if desired
@@ -21,7 +21,7 @@ function [s] = modelConfig(n_b, n_n, pwm, ploting)
     t_s = t_s * pwm / 100; % PWM Load
     
     % Inertia
-    J = inertia(n, n_b, n_n);
+    J = inertia(n, n_b, n_n,Jm);
     
     % Motor parameters
     V_eff = 12 * pwm /100; % Effective Voltage
@@ -41,7 +41,7 @@ function [s] = modelConfig(n_b, n_n, pwm, ploting)
     y0 = [0, 0];
     
     % Numerical solution defiition
-    [t, y] = ode45(@(t,y) odefcn(t, y, J, t_s, w_tv, n, n_b, n_n), tspan, y0);
+    [t, y] = ode45(@(t,y) odefcn(t, y, J, t_s, w_tv, n, n_b, n_n,mew,Cad), tspan, y0);
     
     % Set correct units
     y(:,2) = y(:,2) ./ (2*pi) * 60; % rpm

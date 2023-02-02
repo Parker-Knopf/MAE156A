@@ -1,5 +1,5 @@
-function t_f = stallTorqueFriction(n, n_b, n_n)
-    u = 0.16; % Dynamic friction coeficient
+function t_f = stallTorqueFriction(n, n_b, n_n,mew)
+    u = mew; % 0.16 Dynamic friction coeficient
     l_b= 6.6 / 1000; %m
     l_c= 9.9 / 1000; %m
     r_s=2E-3; %m

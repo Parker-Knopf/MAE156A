@@ -27,11 +27,10 @@ for i = 1:length(config)
                     Cad=cda(k);
 
                     s(p,o) = modelConfig(config(i, 1), config(i, 2), pwm(j), plot,mew,Jm,Cad);
-                    p=p+1;
                 end
+                p=
             end
         end
-        p=1;
         o=o+1;
     end 
 end
@@ -40,9 +39,8 @@ if (plot)
     sgtitle("All Configurations: Model vs Results")
 end
 for i=1:1000
-    b(i) = mean(s(i,:));
+    s(i) = mean(s(i,:));
 end
 
 
-
-%fprintf("Model Accuracy: %.3f\n", b);
+fprintf("Model Accuracy: %.3f\n", s);
