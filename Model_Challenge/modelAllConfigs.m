@@ -51,6 +51,7 @@ end
 for i=1:tot
     b(i) = mean(s(i,:));
 end
+fprintf('Minimum S values with Index I for 4 configurations at 3 power levels')
 [M,I]=min(b)
 c=[indx(I,:)];
 CDnew=cda(c(3))
