@@ -1,0 +1,267 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>modelConfig</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-02-02"><meta name="DC.source" content="modelConfig.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Given Parameters</a></li><li><a href="#3">Parameters</a></li><li><a href="#4">Numerical Solution</a></li><li><a href="#5">Theoretical Results</a></li><li><a href="#6">Experimental Results</a></li><li><a href="#7">S</a></li><li><a href="#8">Plot</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [s] = modelConfig(n_b, n_n, pwm, ploting,mew,Jm,Cad)
+</pre><h2 id="2">Given Parameters</h2><pre class="codeinput">    <span class="comment">% Indiviusal Figures if desired</span>
+<span class="comment">%     fig = figure(1);</span>
+<span class="comment">%     clf(fig);</span>
+
+    data1 = importdata(sprintf(<span class="string">"Data/data_motor_b%d_n%d_pwm%d_t1.csv"</span>, n_b, n_n, pwm));
+    data2 = importdata(sprintf(<span class="string">"Data/data_motor_b%d_n%d_pwm%d_t2.csv"</span>, n_b, n_n, pwm));
+
+    <span class="comment">% Set frame of view (time)</span>
+    t_end = 10; <span class="comment">% s</span>
+
+    <span class="comment">% Gear Ratio</span>
+    n = 4.43;
+</pre><pre class="codeoutput error">Not enough input arguments.
+
+Error in modelConfig (line 8)
+    data1 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t1.csv", n_b, n_n, pwm));
+</pre><h2 id="3">Parameters</h2><pre class="codeinput">    <span class="comment">% Stall Torque</span>
+    t_s = (0.175 * 9.81 / 100); <span class="comment">% Nm</span>
+    t_s = t_s * pwm / 100; <span class="comment">% PWM Load</span>
+
+    <span class="comment">% Inertia</span>
+    J = inertia(n, n_b, n_n,Jm);
+
+    <span class="comment">% Motor parameters</span>
+    V_eff = 12 * pwm /100; <span class="comment">% Effective Voltage</span>
+<span class="comment">%     w_nl = 7910.21; % Pratical No-load Speed</span>
+    w_nl = 8100; <span class="comment">% Pratical No-load Speed</span>
+
+    K = 12 / (w_nl * (2*pi) / 60);
+
+    <span class="comment">% Pratical Terminal Velocity</span>
+    w_tv = V_eff / K; <span class="comment">% rads / s</span>
+</pre><h2 id="4">Numerical Solution</h2><pre class="codeinput">    <span class="comment">% Set frame of view (time)</span>
+    tspan = [0, t_end];
+    <span class="comment">% Inital conditions</span>
+    y0 = [0, 0];
+
+    <span class="comment">% Numerical solution defiition</span>
+    [t, y] = ode45(@(t,y) odefcn(t, y, J, t_s, w_tv, n, n_b, n_n,mew,Cad), tspan, y0);
+
+    <span class="comment">% Set correct units</span>
+    y(:,2) = y(:,2) ./ (2*pi) * 60; <span class="comment">% rpm</span>
+
+    f_v_m = terminalVelocity(y(:,2));
+    t_r_m = riseTime(f_v_m, t, y(:,2)) * 1000; <span class="comment">% ms</span>
+
+    <span class="keyword">if</span> (ploting)
+        t = t(:) * 1000; <span class="comment">% ms</span>
+        plot(t, y(:,2), <span class="string">"color"</span>, <span class="string">"blue"</span>);
+        yline(f_v_m, <span class="string">"color"</span>, <span class="string">"cyan"</span>);
+        xline(t_r_m, <span class="string">"color"</span>, <span class="string">"cyan"</span>);
+    <span class="keyword">end</span>
+</pre><h2 id="5">Theoretical Results</h2><pre class="codeinput">    <span class="keyword">if</span> (ploting)
+        fprintf(<span class="string">"Theoretical Results for %d bolts, %d nuts at %d PWM:\n"</span>, n_b, n_n, pwm);
+        fprintf(<span class="string">"Rise Time: %.3f\n"</span>, t_r_m);
+        fprintf(<span class="string">"Terminal Velocity: %.3f\n\n"</span>, f_v_m);
+    <span class="keyword">end</span>
+</pre><h2 id="6">Experimental Results</h2><pre class="codeinput">    [t1, wf1] = expVelocityPlot(data1);
+    [t2, wf2] = expVelocityPlot(data2);
+
+    f_v1 = terminalVelocity(wf1);
+    f_v2 = terminalVelocity(wf2);
+    f_v_r = (f_v1 + f_v2) / 2.0;
+
+    t_r_r = (riseTime(f_v1, t1, wf1) + riseTime(f_v2, t2, wf2)) / 2 * 1000; <span class="comment">% ms</span>
+
+    <span class="keyword">if</span> (ploting)
+        fprintf(<span class="string">"Experimental Results for %d bolts, %d nuts at %d PWM:\n"</span>, n_b, n_n, pwm);
+        fprintf(<span class="string">"Rise Time: %.3f\n"</span>, t_r_r);
+        fprintf(<span class="string">"Terminal Velocity: %.3f\n\n"</span>, f_v_r);
+        fprintf(<span class="string">"------------------------\n"</span>);
+
+        hold <span class="string">on</span>;
+        t1 = t1(:) * 1000;
+        plot(t1, wf1, <span class="string">"color"</span>, <span class="string">"red"</span>);
+        yline(f_v_r, <span class="string">"color"</span>, <span class="string">"yellow"</span>);
+        xline(t_r_r, <span class="string">"color"</span>, <span class="string">"yellow"</span>);
+    <span class="keyword">end</span>
+</pre><h2 id="7">S</h2><pre class="codeinput">    s = abs(t_r_m - t_r_r)/t_r_r + 4*abs(f_v_m - f_v_r)/f_v_r;
+</pre><h2 id="8">Plot</h2><pre class="codeinput">    <span class="keyword">if</span> (ploting)
+        title(sprintf(<span class="string">"%d Bolts, %d Nuts at %d PWM"</span>, n_b, n_n, pwm));
+        xlabel(<span class="string">"Time (ms)"</span>);
+        ylabel(<span class="string">"RPM"</span>);
+        legend(<span class="string">"Theory"</span>, <span class="string">"Theory t_r, f_v"</span>, <span class="string">""</span>, <span class="string">"Experimental Results"</span>, <span class="string">"Experimental t_r, f_v"</span>, <span class="string">"Location"</span>, <span class="string">"southeast"</span>);
+        <span class="comment">% Save Indiviusal Figures if desired</span>
+<span class="comment">%         saveas(fig, sprintf("Figures/b_%dn_%dpwm_%d.png", n_b, n_n, pwm))</span>
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [s] = modelConfig(n_b, n_n, pwm, ploting,mew,Jm,Cad)
+    %% Given Parameters
+
+    % Indiviusal Figures if desired
+%     fig = figure(1);
+%     clf(fig);
+    
+    data1 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t1.csv", n_b, n_n, pwm));
+    data2 = importdata(sprintf("Data/data_motor_b%d_n%d_pwm%d_t2.csv", n_b, n_n, pwm));
+    
+    % Set frame of view (time)
+    t_end = 10; % s
+    
+    % Gear Ratio
+    n = 4.43;
+    
+    %% Parameters
+    
+    % Stall Torque
+    t_s = (0.175 * 9.81 / 100); % Nm
+    t_s = t_s * pwm / 100; % PWM Load
+    
+    % Inertia
+    J = inertia(n, n_b, n_n,Jm);
+    
+    % Motor parameters
+    V_eff = 12 * pwm /100; % Effective Voltage
+%     w_nl = 7910.21; % Pratical No-load Speed
+    w_nl = 8100; % Pratical No-load Speed
+    
+    K = 12 / (w_nl * (2*pi) / 60);
+    
+    % Pratical Terminal Velocity
+    w_tv = V_eff / K; % rads / s
+    
+    %% Numerical Solution
+    
+    % Set frame of view (time)
+    tspan = [0, t_end];
+    % Inital conditions
+    y0 = [0, 0];
+    
+    % Numerical solution defiition
+    [t, y] = ode45(@(t,y) odefcn(t, y, J, t_s, w_tv, n, n_b, n_n,mew,Cad), tspan, y0);
+    
+    % Set correct units
+    y(:,2) = y(:,2) ./ (2*pi) * 60; % rpm
+    
+    f_v_m = terminalVelocity(y(:,2));
+    t_r_m = riseTime(f_v_m, t, y(:,2)) * 1000; % ms
+
+    if (ploting)
+        t = t(:) * 1000; % ms
+        plot(t, y(:,2), "color", "blue");
+        yline(f_v_m, "color", "cyan");
+        xline(t_r_m, "color", "cyan");
+    end
+    
+    %% Theoretical Results
+    
+    if (ploting)
+        fprintf("Theoretical Results for %d bolts, %d nuts at %d PWM:\n", n_b, n_n, pwm);
+        fprintf("Rise Time: %.3f\n", t_r_m);
+        fprintf("Terminal Velocity: %.3f\n\n", f_v_m);
+    end
+    
+    %% Experimental Results
+    
+    [t1, wf1] = expVelocityPlot(data1);
+    [t2, wf2] = expVelocityPlot(data2);
+    
+    f_v1 = terminalVelocity(wf1);
+    f_v2 = terminalVelocity(wf2);
+    f_v_r = (f_v1 + f_v2) / 2.0;
+    
+    t_r_r = (riseTime(f_v1, t1, wf1) + riseTime(f_v2, t2, wf2)) / 2 * 1000; % ms
+    
+    if (ploting)
+        fprintf("Experimental Results for %d bolts, %d nuts at %d PWM:\n", n_b, n_n, pwm);
+        fprintf("Rise Time: %.3f\n", t_r_r);
+        fprintf("Terminal Velocity: %.3f\n\n", f_v_r);
+        fprintf("REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH\n");
+        
+        hold on;
+        t1 = t1(:) * 1000;
+        plot(t1, wf1, "color", "red");
+        yline(f_v_r, "color", "yellow");
+        xline(t_r_r, "color", "yellow");
+    end
+
+    %% S
+
+    s = abs(t_r_m - t_r_r)/t_r_r + 4*abs(f_v_m - f_v_r)/f_v_r;
+    
+    %% Plot
+
+    if (ploting)
+        title(sprintf("%d Bolts, %d Nuts at %d PWM", n_b, n_n, pwm));
+        xlabel("Time (ms)");
+        ylabel("RPM");
+        legend("Theory", "Theory t_r, f_v", "", "Experimental Results", "Experimental t_r, f_v", "Location", "southeast");
+        % Save Indiviusal Figures if desired
+%         saveas(fig, sprintf("Figures/b_%dn_%dpwm_%d.png", n_b, n_n, pwm))
+    end
+end
+##### SOURCE END #####
+--></body></html>
