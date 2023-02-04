@@ -1,5 +1,6 @@
 function J_tot = inertia(n, n_b, n_n)    
-    J_m = 3.9211*10^(-7); % kgm^2
+    J_m = 10*10^(-6); % kgm^2
+%     J_m = 3.9211*10^(-7); % kgm^2
     
     h_r = 0.5 * 0.0254; % m
     m_hub = 65 / 1000; % kg
