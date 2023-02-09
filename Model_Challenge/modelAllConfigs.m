@@ -34,7 +34,7 @@ for i = 1:length(config)
                     mew=mewa(l);
                     Cad=cda(k);
 
-                    s(p,o) = modelConfig(config(i, 1), config(i, 2), pwm(j), plot,mew,Jm,Cad);
+%                     s(p,o) = modelConfig(config(i, 1), config(i, 2), pwm(j), plot,mew,Jm,Cad);
                     indx(p,:)=[m,l,k];
                     p=p+1;
                 end
