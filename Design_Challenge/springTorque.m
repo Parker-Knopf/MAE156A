@@ -1,10 +1,10 @@
 function t_s = springTorque(a, c)
 
-    k = 0;
-    s0 = 0;
-    l_s = 0;
-    l_rx = 0;
-    l_ry = 0;
+    k = 274.4;
+    s0 = 28.22 / 1000; % m
+    l_s = 35 / 1000; % m
+    l_rx = 5 / 1000; % m
+    l_ry = 30 / 1000; % m
 
     ang = atan(l_rx / (c.l_p + l_ry));
     l_q = l_rx / sin(ang);

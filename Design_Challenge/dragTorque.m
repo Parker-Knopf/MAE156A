@@ -1,8 +1,8 @@
 function t_d = dragTorque(a, w, c)
     % Constants
-    c_d = 0;
-    p = 0;
-    t = 0;
+    c_d = 0.1;
+    p = 1.225; % kg / m^3
+    t = 3.24 * 3 / 1000; % m
 
     ang1 = @(x) 180 - angle(c.l_p, x, a);
     ang2 = @(x) angle(c.l_p, x, a);

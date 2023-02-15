@@ -22,15 +22,11 @@ a = a .* 2.*pi ./ 360; % Convert angles to rad
 
 w = linspace(0, v1, itr);
 
-ang = zeros(1, itr);
+m = zeros(1, itr);
 for i = 1:itr
-    m = zeros(1, itr);
-    for j = 1:itr
-        m(j) = model(a(j), w(i), false);
-    end
-    ang(i) = a(m==min(m));
+    m(i) = model(a(i), w(i), false);
 end
-ang
+find(m(min(m)
 
 m = zeros(1, 2*step-1);
 %% Rise to 1600 RPM
