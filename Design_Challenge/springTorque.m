@@ -1,6 +1,7 @@
 function t_s = springTorque(a, c)
 
-    k = 274.4;
+%     k = 274.4;
+    k = 800.4;
     s0 = 28.22 / 1000; % m
     l_s = 35 / 1000; % m
     l_rx = 5 / 1000; % m
