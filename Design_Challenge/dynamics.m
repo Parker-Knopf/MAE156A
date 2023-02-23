@@ -1,4 +1,4 @@
-clear all; clc; close all;
+clear; clc; close all;
 
 % Spring Anchor
 s0 = [36.5; 16.5; 0];
